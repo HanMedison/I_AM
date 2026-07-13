@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>데스티니 2 - "전설이 되세요"</title>
+    <!-- Google Fonts: Noto Sans KR & Orbitron (SF감성을 위한 영문 폰트) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    screens: {
+                        'xs': '375px'
+                    },
+                    colors: {
+                        cosmicBlack: '#05070B',
+                        cosmicCard: '#0C0E17',
+                        neonBlue: '#00E5FF',
+                        goldYellow: '#FFD700',
+                        crimsonRed: '#FF2A4B',
+                        solarOrange: '#FF6D00',
+                        arcCyan: '#00E5FF',
+                        voidPurple: '#AA00FF',
+                        stasisIce: '#80DEEA',
+                        strandGreen: '#00E676'
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'sans-serif'],
+                        sf: ['Orbitron', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #05070B;
+            color: #FFFFFF;
+            overflow-x: hidden;
+        }
+        
+        /* Neon glows and transitions */
+        .glow-blue {
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.08);
+            border: 1px solid rgba(0, 229, 255, 0.1);
+        }
+        .glow-blue:hover {
+            box-shadow: 0 0 35px rgba(0, 229, 255, 0.25);
+            border: 1px solid rgba(0, 229, 255, 0.35);
+        }
+        .glow-gold {
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+        .glow-gold:hover {
+            box-shadow: 0 0 35px rgba(255, 215, 0, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        /* Interactive element glows */
+        .glow-solar:hover { box-shadow: 0 0 30px rgba(255, 109, 0, 0.25); border-color: rgba(255, 109, 0, 0.4); }
+        .glow-arc:hover { box-shadow: 0 0 30px rgba(0, 229, 255, 0.25); border-color: rgba(0, 229, 255, 0.4); }
+        .glow-void:hover { box-shadow: 0 0 30px rgba(170, 0, 255, 0.25); border-color: rgba(170, 0, 255, 0.4); }
+        .glow-stasis:hover { box-shadow: 0 0 30px rgba(128, 222, 234, 0.25); border-color: rgba(128, 222, 234, 0.4); }
+        .glow-strand:hover { box-shadow: 0 0 30px rgba(0, 230, 118, 0.25); border-color: rgba(0, 230, 118, 0.4); }
+
+        .transition-all-300 {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Planetary atmosphere light animation */
+        @keyframes orbitPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.3; }
+            50% { transform: scale(1.05) rotate(180deg); opacity: 0.55; }
+        }
+        .traveler-ring {
+            animation: orbitPulse 25s infinite linear;
+        }
+
+        @keyframes pulseNeonText {
+            0%, 100% { text-shadow: 0 0 8px rgba(0,229,255,0.3); }
+            50% { text-shadow: 0 0 18px rgba(0,229,255,0.6); }
+        }
+        .pulse-neon {
+            animation: pulseNeonText 4s infinite;
+        }
+    </style>
+</head>
+<body class="bg-cosmicBlack text-white antialiased">
+
+    <!-- Live Stars Canvas Rendering Background -->
+    <canvas id="cosmicBackground" class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none opacity-45"></canvas>
+
+    <!-- NAVIGATION BAR -->
+    <header class="fixed top-0 left-0 w-full z-50 bg-cosmicBlack/90 backdrop-blur-md border-b border-white/5 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center space-x-3 group">
+                <!-- Custom Inline SVG Destiny Tricon Logo -->
+                <svg class="w-8 h-8 text-neonBlue group-hover:text-white transition-all duration-500 transform group-hover:rotate-180" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 85L80 33H62L50 54L38 33H20L50 85Z" fill="currentColor"/>
+                    <path d="M50 15L24 25V30L50 20L76 30V25L50 15Z" fill="currentColor" class="opacity-80"/>
+                </svg>
+                <div class="flex flex-col">
+                    <span class="text-base sm:text-lg font-black tracking-widest text-white font-sf leading-none">DESTINY <span class="text-neonBlue">2</span></span>
+                    <span class="text-[7px] sm:text-[8px] text-gray-500 font-bold uppercase tracking-[0.3em] mt-1 leading-none">BRIGHTNESS PORTAL</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden lg:flex items-center space-x-6 xl:space-x-8 text-xs font-semibold tracking-widest uppercase text-gray-400">
+                <a href="#about" class="hover:text-neonBlue transition-colors">게임 개요</a>
+                <a href="#elements" class="hover:text-neonBlue transition-colors">빛과 어둠 속성</a>
+                <a href="#classes" class="hover:text-neonBlue transition-colors">수호자 클래스</a>
+                <a href="#charms" class="hover:text-neonBlue transition-colors">핵심 매력</a>
+                <a href="#raids" class="hover:text-neonBlue transition-colors">대표 레이드</a>
+                <a href="#recommend" class="hover:text-neonBlue transition-colors">적합도 검사</a>
+                <a href="#specs" class="hover:text-neonBlue transition-colors">구동 사양</a>
+            </nav>
+
+            <div class="flex items-center space-x-2 sm:space-x-4">
+                <!-- Server Status: Hidden on very small mobile to prevent overflow -->
+                <div class="hidden xs:flex items-center space-x-2 px-2.5 py-1 bg-emerald-500/10 rounded-full border border-emerald-500/20">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    <span class="text-[8px] sm:text-[9px] text-emerald-400 font-bold uppercase tracking-wider font-sf">ONLINE</span>
+                </div>
+                
+                <a href="#cta" class="inline-flex px-3 py-1.5 sm:px-4 sm:py-2 bg-neonBlue hover:bg-white text-cosmicBlack font-black text-[10px] sm:text-xs uppercase tracking-wider rounded transition-all duration-300 transform active:scale-95 shadow-lg shadow-neonBlue/20">
+                    무료 플레이
+                </a>
+
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="lg:hidden p-2 text-gray-400 hover:text-white transition-colors" aria-label="Toggle Menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MOBILE NAVIGATION OVERLAY -->
+    <div id="mobileMenu" class="fixed inset-0 z-50 bg-cosmicBlack/95 backdrop-blur-lg hidden flex flex-col justify-center items-center transition-all duration-300">
+        <button onclick="toggleMobileMenu()" class="absolute top-6 right-6 p-2 text-gray-400 hover:text-white transition-colors">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <nav class="flex flex-col space-y-6 text-center text-lg font-bold tracking-widest uppercase text-gray-300">
+            <a href="#about" onclick="toggleMobileMenu()" class="hover:text-neonBlue transition-colors">게임 개요</a>
+            <a href="#elements" onclick="toggleMobileMenu()" class="hover:text-neonBlue transition-colors">빛과 어둠 속성</a>
+            <a href="#classes" onclick="toggleMobileMenu()" class="hover:text-neonBlue transition-colors">수호자 클래스</a>
+            <a href="#charms" onclick="toggleMobileMenu()" class="hover:text-neonBlue transition-colors">핵심 매력</a>
+            <a href="#raids" onclick="toggleMobileMenu()" class="hover:text-neonBlue transition-colors">대표 레이드</a>
+            <a href="#recommend" onclick="toggleMobileMenu()" class="hover:text-neonBlue transition-colors">적합도 검사</a>
+            <a href="#specs" onclick="toggleMobileMenu()" class="hover:text-neonBlue transition-colors">구동 사양</a>
+        </nav>
+    </div>
+
+    <!-- SECTION 1: HERO SECTION -->
+    <section class="relative min-h-screen flex items-center justify-center pt-24 pb-12 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-t from-cosmicBlack via-transparent to-cosmicBlack/80 z-0"></div>
+        <div class="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-neonBlue/10 to-transparent blur-3xl z-0"></div>
+        <div class="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-crimsonRed/5 to-transparent blur-3xl z-0"></div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full">
+            
+            <!-- Left Info Area -->
+            <div class="lg:col-span-7 text-left order-2 lg:order-1 mt-6 lg:mt-0">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 bg-white/5 rounded-full border border-white/10 mb-6 sm:mb-8">
+                    <span class="w-1.5 h-1.5 rounded-full bg-goldYellow animate-pulse"></span>
+                    <span class="text-[9px] sm:text-[10px] font-bold tracking-widest text-goldYellow uppercase font-sf">BUNGIE OFFICIAL PORTFOLIO</span>
+                </div>
+
+                <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-none mb-6">
+                    <span class="block text-gray-400 font-light text-lg sm:text-xl md:text-2xl tracking-[0.2em] uppercase mb-3">전설이 되세요</span>
+                    <span class="block bg-gradient-to-r from-white via-neonBlue to-white bg-clip-text text-transparent uppercase font-sf tracking-wider drop-shadow-2xl pulse-neon leading-tight">
+                        Become Legend
+                    </span>
+                </h1>
+
+                <p class="max-w-xl text-sm sm:text-base text-gray-400 mb-8 sm:mb-10 leading-relaxed font-light">
+                    운명은 정해지는 것이 아닌, 동료들과 함께 개척하고 쟁취하는 것입니다.<br class="hidden sm:inline">
+                    인류의 마지막 보루를 사수하고, 전설적인 수호자로서 장엄한 우주 대서사시를 경험하십시오.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+                    <a href="#cta" class="w-full sm:w-auto px-8 py-4 bg-neonBlue text-cosmicBlack font-black text-xs tracking-widest uppercase rounded glow-blue transition-all-300 text-center transform hover:-translate-y-0.5 active:translate-y-0">
+                        무료 플레이
+                    </a>
+                    <a href="#about" class="w-full sm:w-auto px-8 py-4 bg-white/5 hover:bg-white/10 text-white font-bold text-xs tracking-widest uppercase rounded border border-white/20 transition-all-300 text-center transform hover:-translate-y-0.5">
+                        게임 소개 ↓
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2 sm:gap-4 mt-12 sm:mt-16 pt-6 sm:pt-8 border-t border-white/10">
+                    <div>
+                        <div class="text-lg sm:text-xl md:text-2xl font-black text-neonBlue font-sf" id="livePlayers">43,280+</div>
+                        <div class="text-[8px] sm:text-[9px] uppercase tracking-wider text-gray-500 mt-1">동시 접속 수호자</div>
+                    </div>
+                    <div>
+                        <div class="text-lg sm:text-xl md:text-2xl font-black text-goldYellow font-sf">100%</div>
+                        <div class="text-[8px] sm:text-[9px] uppercase tracking-wider text-gray-500 mt-1">한국어 풀 음성 더빙</div>
+                    </div>
+                    <div>
+                        <div class="text-lg sm:text-xl md:text-2xl font-black text-white font-sf">FREE</div>
+                        <div class="text-[8px] sm:text-[9px] uppercase tracking-wider text-gray-500 mt-1">무료 다운로드</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Visual Area: Interactive Traveler CSS Glow Composition -->
+            <div class="lg:col-span-5 flex justify-center relative order-1 lg:order-2">
+                <div class="relative w-48 h-48 xs:w-64 xs:h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 flex items-center justify-center">
+                    
+                    <!-- Atmospheric Glow Rings -->
+                    <div class="absolute w-full h-full rounded-full border border-neonBlue/10 traveler-ring"></div>
+                    <div class="absolute w-[80%] h-[80%] rounded-full border border-dashed border-white/10 traveler-ring" style="animation-direction: reverse; animation-duration: 40s;"></div>
+                    <div class="absolute w-[110%] h-[110%] rounded-full bg-neonBlue/5 blur-3xl pointer-events-none"></div>
+                    
+                    <!-- Planetary Body (Traveler Model) -->
+                    <div class="relative w-36 h-36 xs:w-48 h-48 sm:w-64 sm:h-64 md:w-72 md:h-72 rounded-full bg-gradient-to-tr from-cosmicBlack via-[#151B2E] to-gray-500/30 border border-white/20 shadow-[inset_-20px_-20px_60px_rgba(0,0,0,0.8),0_0_50px_rgba(0,229,255,0.15)] flex items-center justify-center overflow-hidden">
+                        
+                        <!-- Internal details / Geometric patterns -->
+                        <div class="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+                        <svg class="absolute w-4/5 h-4/5 text-neonBlue/10" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.5">
+                            <circle cx="50" cy="50" r="40" stroke-dasharray="2 2" />
+                            <circle cx="50" cy="50" r="30" />
+                            <line x1="10" y1="50" x2="90" y2="50" />
+                            <line x1="50" y1="10" x2="50" y2="90" />
+                            <polygon points="50,15 85,50 50,85 15,50" stroke-dasharray="1 1" />
+                        </svg>
+
+                        <!-- Glowing core -->
+                        <div class="w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-white blur-xl opacity-30"></div>
+                        
+                        <!-- Mini HUD text inside traveler representation -->
+                        <div class="absolute bottom-4 sm:bottom-6 text-center">
+                            <span class="text-[6px] sm:text-[8px] font-sf font-bold tracking-[0.4em] text-neonBlue">THE TRAVELER</span>
+                        </div>
+                    </div>
+
+                    <!-- Orbiting Satellites / Shards -->
+                    <div class="absolute w-2 h-2 sm:w-3 sm:h-3 bg-goldYellow rounded-full blur-[2px] top-6 left-12 sm:top-12 sm:left-16 animate-pulse"></div>
+                    <div class="absolute w-1.5 h-1.5 sm:w-2 sm:h-2 bg-neonBlue rounded-full bottom-6 right-6 sm:bottom-12 sm:right-12"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce opacity-40 hover:opacity-100 transition-opacity">
+            <span class="text-[8px] font-sf uppercase tracking-[0.3em] text-white mb-2">SCROLL DOWN</span>
+            <svg class="w-4 h-4 text-neonBlue" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- SECTION 2: UNIVERSE OVERVIEW -->
+    <section id="about" class="relative py-16 sm:py-24 md:py-32 bg-gradient-to-b from-cosmicBlack via-cosmicCard/30 to-cosmicBlack border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Visual Area: Pure SVG Obsidian Pyramid Abstract (The Final Shape Theme) -->
+                <div class="lg:col-span-5 order-2 lg:order-1 flex justify-center">
+                    <div class="relative w-full max-w-xs sm:max-w-sm aspect-square bg-cosmicCard border border-white/10 rounded-2xl p-6 sm:p-8 flex items-center justify-center glow-gold overflow-hidden">
+                        
+                        <!-- Futuristic Grid Background -->
+                        <div class="absolute inset-0 opacity-10 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,_transparent_1px),_linear-gradient(90deg,_rgba(255,255,255,0.05)_1px,_transparent_1px)] bg-[size:20px_20px]"></div>
+                        
+                        <!-- Monolith SVG Art -->
+                        <svg class="w-4/5 h-4/5 text-gray-500" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Background Neon Rings -->
+                            <circle cx="100" cy="100" r="80" stroke="url(#pinkPurpleGrad)" stroke-width="1.5" class="opacity-40" stroke-dasharray="5 5" />
+                            <circle cx="100" cy="100" r="60" stroke="#FFD700" stroke-width="0.5" class="opacity-30" />
+                            
+                            <!-- The Pyramid (Darkness Monolith) -->
+                            <polygon points="100,30 150,140 100,165" fill="#111422" stroke="url(#solarGrad)" stroke-width="2" />
+                            <polygon points="100,30 50,140 100,165" fill="#070912" stroke="url(#neonBlueGrad)" stroke-width="1.5" />
+                            <line x1="100" y1="30" x2="100" y2="165" stroke="url(#goldGrad)" stroke-width="1" class="opacity-70" />
+
+                            <!-- Floating Shards -->
+                            <polygon points="40,60 48,50 45,75" fill="#FF2A4B" class="opacity-80" />
+                            <polygon points="160,70 170,85 155,90" fill="#00E5FF" class="opacity-80" />
+                            <polygon points="140,40 148,35 142,48" fill="#FFD700" class="opacity-60" />
+
+                            <!-- Gradients Definition -->
+                            <defs>
+                                <linearGradient id="pinkPurpleGrad" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stop-color="#FF2A4B" />
+                                    <stop offset="100%" stop-color="#AA00FF" />
+                                </linearGradient>
+                                <linearGradient id="solarGrad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#FFD700" />
+                                    <stop offset="100%" stop-color="#FF6D00" />
+                                </linearGradient>
+                                <linearGradient id="neonBlueGrad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#00E5FF" />
+                                    <stop offset="100%" stop-color="#00E676" />
+                                </linearGradient>
+                                <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#FFFFFF" />
+                                    <stop offset="100%" stop-color="#FFD700" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+
+                        <!-- Absolute Label Overlay -->
+                        <div class="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 text-left">
+                            <span class="text-[9px] font-sf font-bold tracking-[0.2em] text-crimsonRed">THE FINAL SHAPE MATRIX</span>
+                            <h4 class="text-xs font-bold text-white mt-1">차원 경계선의 왜곡 장치</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Description Area -->
+                <div class="lg:col-span-7 order-1 lg:order-2 text-left">
+                    <span class="text-xs font-bold uppercase tracking-[0.3em] text-neonBlue">01 / UNIVERSE</span>
+                    <h2 class="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight mt-3 mb-6">데스티니 2는</h2>
+                    <div class="h-1 w-20 bg-neonBlue rounded-full mb-6"></div>
+                    
+                    <p class="text-gray-300 text-sm sm:text-base leading-relaxed mb-6 font-light">
+                        데스티니 2는 독보적인 1인칭 슈팅 액션과 방대한 규모의 우주 MMO 세계관이 결합된 SF 대표 걸작입니다. 
+                        단순히 반사신경만으로 대전하는 슈팅에 멈추지 않고, 플레이어는 전 우주의 물리 법칙을 변조시키는 '빛'과 '어둠'의 힘을 몸에 익히고 우주의 운명을 걸고 진군합니다.
+                    </p>
+                    <p class="text-gray-400 text-sm sm:text-base leading-relaxed mb-8 font-light">
+                        다채롭고 강력한 방어구와 무기들을 수집하고, 화려한 성질의 원소 공격 스킬을 최적으로 설계해 자신만의 유일무이한 전술 덱(수호자 빌드)을 완성하십시오. 우주 전역의 동료 수호자들과 파티를 맺고 고도의 시너지를 교환할 수 있습니다.
+                    </p>
+
+                    <div class="flex items-center space-x-3 p-4 bg-white/5 border border-white/5 rounded-xl">
+                        <span class="text-2xl flex-shrink-0">🌍</span>
+                        <div>
+                            <h4 class="font-black text-sm text-white">유기적으로 호흡하는 실시간 가상 광장</h4>
+                            <p class="text-xs text-gray-400">행성 전체가 실시간 필드 콘텐츠로 연동되어 전장에 매 시간 신규 이벤트가 발생합니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: LIGHT AND DARK ELEMENTS INTERACTIVE SECTION -->
+    <section id="elements" class="relative py-16 sm:py-24 bg-cosmicBlack border-t border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12 sm:mb-16">
+                <span class="text-xs font-bold uppercase tracking-[0.3em] text-goldYellow">POWER OF THE UNIVERSE</span>
+                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight mt-2 mb-4">빛의 3속성과 어둠의 2속성</h2>
+                <div class="h-1 w-24 bg-goldYellow mx-auto rounded-full mb-6"></div>
+                <p class="text-xs sm:text-sm text-gray-400 max-w-xl mx-auto leading-relaxed font-light">
+                    수호자는 전 우주를 지탱하는 위대한 원소 힘들을 지배합니다. 각 속성 고유의 에너지는 아군을 회복하거나 적을 분쇄하는 다채로운 원동력이 됩니다.
+                </p>
+            </div>
+
+            <!-- Elements Grid Layout -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6 mt-8 sm:mt-12">
+                
+                <!-- LIGHT SECTION 1: 태양 (Solar) -->
+                <div class="bg-cosmicCard/40 border border-white/5 rounded-2xl p-5 sm:p-6 transition-all-300 glow-solar group hover:-translate-y-1">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-orange-600/10 border border-orange-500/30 flex items-center justify-center text-solarOrange text-lg sm:text-xl font-bold">
+                            🔥
+                        </div>
+                        <span class="text-[8px] sm:text-[9px] text-solarOrange bg-orange-500/10 border border-orange-500/20 px-2 py-0.5 rounded font-bold uppercase tracking-wider">빛의 속성</span>
+                    </div>
+                    <h4 class="text-base sm:text-lg font-black text-white group-hover:text-solarOrange transition-colors mb-2">태양 (Solar)</h4>
+                    <p class="text-xs text-gray-400 leading-relaxed mb-4 font-light">
+                        파괴적인 태양의 불꽃으로 전장을 잿더미로 만듭니다. 아군을 신속하게 복구하는 치유와 지속적인 화염 피해 증폭에 고도로 특화되어 있습니다.
+                    </p>
+                    <div class="text-[10px] text-gray-500 border-t border-white/5 pt-3">
+                        <strong class="text-solarOrange">핵심:</strong> 점화, 소각, 회복, 광휘
+                    </div>
+                </div>
+
+                <!-- LIGHT SECTION 2: 전기 (Arc) -->
+                <div class="bg-cosmicCard/40 border border-white/5 rounded-2xl p-5 sm:p-6 transition-all-300 glow-arc group hover:-translate-y-1">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-cyan-600/10 border border-cyan-500/30 flex items-center justify-center text-arcCyan text-lg sm:text-xl font-bold">
+                            ⚡
+                        </div>
+                        <span class="text-[8px] sm:text-[9px] text-arcCyan bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded font-bold uppercase tracking-wider">빛의 속성</span>
+                    </div>
+                    <h4 class="text-base sm:text-lg font-black text-white group-hover:text-arcCyan transition-colors mb-2">전기 (Arc)</h4>
+                    <p class="text-xs text-gray-400 leading-relaxed mb-4 font-light">
+                        끊임없이 몰아치는 폭풍과 번개의 에너지입니다. 번개처럼 기민한 속도로 돌격하여 적 집단 사이에 연쇄 번개 전류를 전도시킵니다.
+                    </p>
+                    <div class="text-[10px] text-gray-500 border-t border-white/5 pt-3">
+                        <strong class="text-arcCyan">핵심:</strong> 과부하, 연쇄, 증폭, 실명
+                    </div>
+                </div>
+
+                <!-- LIGHT SECTION 3: 공허 (Void) -->
+                <div class="bg-cosmicCard/40 border border-white/5 rounded-2xl p-5 sm:p-6 transition-all-300 glow-void group hover:-translate-y-1">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-purple-600/10 border border-purple-500/30 flex items-center justify-center text-voidPurple text-lg sm:text-xl font-bold">
+                            🔮
+                        </div>
+                        <span class="text-[8px] sm:text-[9px] text-voidPurple bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 rounded font-bold uppercase tracking-wider">빛의 속성</span>
+                    </div>
+                    <h4 class="text-base sm:text-lg font-black text-white group-hover:text-voidPurple transition-colors mb-2">공허 (Void)</h4>
+                    <p class="text-xs text-gray-400 leading-relaxed mb-4 font-light">
+                        우주의 중력과 차원 너머의 공허를 흡수합니다. 적들의 공격을 흡수하는 보호막을 생성하고, 중력 왜곡으로 적을 약화하거나 끌어당깁니다.
+                    </p>
+                    <div class="text-[10px] text-gray-500 border-t border-white/5 pt-3">
+                        <strong class="text-voidPurple">핵심:</strong> 보호막, 약화, 억제, 파동
+                    </div>
+                </div>
+
+                <!-- DARK SECTION 1: 시공 (Stasis) -->
+                <div class="bg-cosmicCard/40 border border-white/5 rounded-2xl p-5 sm:p-6 transition-all-300 glow-stasis group hover:-translate-y-1">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-cyan-200/10 border border-cyan-300/30 flex items-center justify-center text-stasisIce text-lg sm:text-xl font-bold">
+                            ❄️
+                        </div>
+                        <span class="text-[8px] sm:text-[9px] text-stasisIce bg-cyan-300/10 border border-cyan-300/20 px-2 py-0.5 rounded font-bold uppercase tracking-wider">어둠의 속성</span>
+                    </div>
+                    <h4 class="text-base sm:text-lg font-black text-white group-hover:text-stasisIce transition-colors mb-2">시공 (Stasis)</h4>
+                    <p class="text-xs text-gray-400 leading-relaxed mb-4 font-light">
+                        물리 법칙을 얼려버리는 절대 영도의 결정화 능력입니다. 적들의 속도를 극도로 늦추거나, 빙벽을 솟구치게 만들어 엄폐를 돕고 적을 산산조각냅니다.
+                    </p>
+                    <div class="text-[10px] text-gray-500 border-t border-white/5 pt-3">
+                        <strong class="text-stasisIce">핵심:</strong> 빙결, 감속, 파편 분쇄, 수정
+                    </div>
+                </div>
+
+                <!-- DARK SECTION 2: 초월 (Strand) -->
+                <div class="bg-cosmicCard/40 border border-white/5 rounded-2xl p-5 sm:p-6 transition-all-300 glow-strand group hover:-translate-y-1">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-green-500/10 border border-green-400/30 flex items-center justify-center text-strandGreen text-lg sm:text-xl font-bold">
+                            🕸️
+                        </div>
+                        <span class="text-[8px] sm:text-[9px] text-strandGreen bg-green-500/10 border border-green-500/20 px-2 py-0.5 rounded font-bold uppercase tracking-wider">어둠의 속성</span>
+                    </div>
+                    <h4 class="text-base sm:text-lg font-black text-white group-hover:text-strandGreen transition-colors mb-2">초월 (Strand)</h4>
+                    <p class="text-xs text-gray-400 leading-relaxed mb-4 font-light">
+                        우주 만물을 연결하는 생명실을 직접 가공합니다. 적들을 묶어 공중에 띄워 무력화하거나, 허공에 줄을 투사해 독보적인 갈고리 비행을 실현합니다.
+                    </p>
+                    <div class="text-[10px] text-gray-500 border-t border-white/5 pt-3">
+                        <strong class="text-strandGreen">핵심:</strong> 직조, 구속, 갈고리 기동, 실충
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: 3대 클래스 상세 가이드 -->
+    <section id="classes" class="relative py-16 sm:py-24 md:py-32 bg-cosmicCard/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="max-w-3xl mx-auto text-center mb-12 sm:mb-16">
+                <span class="text-xs font-bold uppercase tracking-[0.3em] text-neonBlue font-sf">02 / CLASSES</span>
+                <h2 class="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight mt-3 mb-6">당신의 클래스를 선택하세요</h2>
+                <div class="h-1 w-20 bg-neonBlue mx-auto rounded-full mb-6"></div>
+                <p class="text-xs sm:text-sm text-gray-400 leading-relaxed font-light">
+                    세 개의 각기 다른 지휘관 철학 중 하나를 선택하세요. 고유의 생존 이동기, 비전 마법, 무기 시너지 및 전장의 지배력을 갖게 됩니다.
+                </p>
+            </div>
+
+            <!-- Interactivity Core Structure -->
+            <div class="mt-8 sm:mt-12 bg-cosmicCard/85 border border-white/10 rounded-2xl p-4 sm:p-8 lg:p-10 glow-gold transition-all duration-500">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 items-stretch">
+                    
+                    <!-- Left: Class Switcher Tab Buttons (Upgraded for horizontal flow on mobile) -->
+                    <div class="lg:col-span-4 flex flex-col justify-between space-y-4">
+                        <div>
+                            <span class="text-[9px] sm:text-[10px] font-bold tracking-[0.2em] text-goldYellow uppercase mb-2 block font-sf">CLASSIFICATION SYSTEM</span>
+                            <h3 class="text-xl sm:text-2xl font-black mb-3 tracking-tight">수호자 클래스</h3>
+                            <p class="text-gray-400 text-xs leading-relaxed mb-6 hidden lg:block font-light">
+                                아래 클래스 중 하나를 클릭해 보세요. 기획서의 핵심 내용이 가장 뛰어난 텍스트 레이아웃과 가독성 높은 차트 구조로 실시간 동기화됩니다.
+                            </p>
+                        </div>
+
+                        <!-- Switcher Buttons - Grid layout on Mobile/Tablet, Vertical stack on Desktop -->
+                        <div class="grid grid-cols-3 lg:grid-cols-1 gap-2 sm:gap-3">
+                            <!-- Hunter Button -->
+                            <button onclick="switchClass('hunter')" id="btn-hunter" class="class-btn flex flex-col lg:flex-row items-center p-3 sm:p-4 bg-white/5 hover:bg-white/10 rounded-xl border border-transparent transition-all duration-300 text-center lg:text-left relative overflow-hidden group">
+                                <div class="absolute left-0 top-0 h-1 w-full lg:h-full lg:w-1.5 bg-neonBlue transition-all duration-300 opacity-0" id="indicator-hunter"></div>
+                                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400 font-bold text-base sm:text-lg lg:mr-4 mb-2 lg:mb-0 group-hover:scale-110 transition-transform">
+                                    🏹
+                                </div>
+                                <div>
+                                    <h4 class="font-black text-white text-xs sm:text-sm tracking-wider group-hover:text-neonBlue transition-colors font-sf">헌터</h4>
+                                    <p class="text-[11px] text-gray-400 hidden lg:block">민첩함, 은밀함, 정밀함</p>
+                                </div>
+                            </button>
+
+                            <!-- Titan Button (Active by default) -->
+                            <button onclick="switchClass('titan')" id="btn-titan" class="class-btn flex flex-col lg:flex-row items-center p-3 sm:p-4 bg-white/5 hover:bg-white/10 rounded-xl border border-white/10 transition-all duration-300 text-center lg:text-left relative overflow-hidden group">
+                                <div class="absolute left-0 top-0 h-1 w-full lg:h-full lg:w-1.5 bg-neonBlue transition-all duration-300" id="indicator-titan"></div>
+                                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-orange-500/20 border border-orange-500/40 flex items-center justify-center text-orange-400 font-bold text-base sm:text-lg lg:mr-4 mb-2 lg:mb-0 group-hover:scale-110 transition-transform">
+                                    🛡️
+                                </div>
+                                <div>
+                                    <h4 class="font-black text-white text-xs sm:text-sm tracking-wider group-hover:text-neonBlue transition-colors font-sf">타이탄</h4>
+                                    <p class="text-[11px] text-gray-400 hidden lg:block">강인함, 보호, 돌파력</p>
+                                </div>
+                            </button>
+
+                            <!-- Warlock Button -->
+                            <button onclick="switchClass('warlock')" id="btn-warlock" class="class-btn flex flex-col lg:flex-row items-center p-3 sm:p-4 bg-white/5 hover:bg-white/10 rounded-xl border border-transparent transition-all duration-300 text-center lg:text-left relative overflow-hidden group">
+                                <div class="absolute left-0 top-0 h-1 w-full lg:h-full lg:w-1.5 bg-neonBlue transition-all duration-300 opacity-0" id="indicator-warlock"></div>
+                                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-purple-500/20 border border-purple-500/40 flex items-center justify-center text-purple-400 font-bold text-base sm:text-lg lg:mr-4 mb-2 lg:mb-0 group-hover:scale-110 transition-transform">
+                                    🔮
+                                </div>
+                                <div>
+                                    <h4 class="font-black text-white text-xs sm:text-sm tracking-wider group-hover:text-neonBlue transition-colors font-sf">워록</h4>
+                                    <p class="text-[11px] text-gray-400 hidden lg:block">신비, 지식, 원소 지배</p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Center: Interactive Details Pane -->
+                    <div class="lg:col-span-5 bg-cosmicBlack/70 rounded-xl border border-white/5 p-5 sm:p-8 flex flex-col justify-between relative overflow-hidden">
+                        <div class="absolute -right-20 -bottom-20 w-60 h-60 rounded-full bg-neonBlue/5 blur-3xl"></div>
+
+                        <div id="class-display-content">
+                            <!-- Upper Header -->
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-white/10">
+                                <div>
+                                    <span class="text-[10px] sm:text-xs font-bold text-orange-400 tracking-widest uppercase block" id="class-sub-badge">선봉대 · 방어 담당 · 근접 전투원</span>
+                                    <h3 class="text-xl sm:text-2xl font-black text-white tracking-wider mt-1" id="class-title">타이탄 · Titan</h3>
+                                </div>
+                            </div>
+
+                            <!-- Quote / Slogan -->
+                            <blockquote class="border-l-2 border-goldYellow pl-4 italic text-xs sm:text-sm text-goldYellow/90 mb-4 sm:mb-6 font-medium" id="class-slogan">
+                                “가장 먼저 적진에 뛰어들고, 가장 마지막까지 동료 앞을 지킵니다.”
+                            </blockquote>
+
+                            <!-- Class Body Description -->
+                            <p class="text-gray-300 text-xs sm:text-sm leading-relaxed mb-6 font-light" id="class-desc">
+                                타이탄은 적과 가까운 거리에서 전선을 밀어붙이고, 아군이 싸울 공간을 만들어주는 클래스입니다. 고유 능력인 방벽으로 적의 공격을 차단하거나, 엄폐물을 만들어 전투 구역을 안정적으로 확보할 수 있습니다. 서브클래스에 따라 보호막 제공, 생존력 강화, 강력한 근접 공격과 폭발적인 궁극기 피해도 담당합니다.
+                            </p>
+
+                            <!-- Live Stat Gauges -->
+                            <div class="space-y-4 mb-6">
+                                <div>
+                                    <div class="flex justify-between text-[10px] sm:text-[11px] font-bold tracking-wider mb-1 text-gray-400">
+                                        <span id="stat-1-label">전투 수호 방어율 (Defense)</span>
+                                        <span class="text-neonBlue font-sf" id="stat-1-val">95%</span>
+                                    </div>
+                                    <div class="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+                                        <div class="bg-orange-500 h-full transition-all duration-500" style="width: 95%" id="stat-1-bar"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[10px] sm:text-[11px] font-bold tracking-wider mb-1 text-gray-400">
+                                        <span id="stat-2-label">민첩 기동 반응력 (Agility)</span>
+                                        <span class="text-neonBlue font-sf" id="stat-2-val">45%</span>
+                                    </div>
+                                    <div class="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+                                        <div class="bg-neonBlue h-full transition-all duration-500" style="width: 45%" id="stat-2-bar"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[10px] sm:text-[11px] font-bold tracking-wider mb-1 text-gray-400">
+                                        <span id="stat-3-label">원소 전장 통제력 (Control)</span>
+                                        <span class="text-neonBlue font-sf" id="stat-3-val">70%</span>
+                                    </div>
+                                    <div class="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+                                        <div class="bg-goldYellow h-full transition-all duration-500" style="width: 70%" id="stat-3-bar"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Class Specialty Block -->
+                        <div class="bg-white/5 border border-white/10 rounded-xl p-3 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-2xl flex-shrink-0" id="class-ult-icon">🛡️</span>
+                                <div>
+                                    <span class="text-[8px] sm:text-[9px] uppercase tracking-widest text-goldYellow font-bold">시그니처 전술 능력</span>
+                                    <h5 class="font-black text-xs text-white" id="class-ult-title">방벽 (Barricade)</h5>
+                                </div>
+                            </div>
+                            <span class="text-[11px] text-gray-400 sm:text-right max-w-none sm:max-w-[200px]" id="class-ult-desc">
+                                적의 공격을 강력히 투과 차단하는 엄폐 장벽을 지면에 즉시 소환합니다.
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Right: HUD Tactical Vector System (Replacing static jpg with dynamic canvas visualizer) -->
+                    <div class="lg:col-span-3 flex flex-col justify-center items-center bg-cosmicBlack/50 rounded-xl border border-white/5 p-6 relative overflow-hidden">
+                        <span class="text-[9px] font-bold tracking-[0.2em] text-neonBlue uppercase mb-6 font-sf">TACTICAL HUD LINK</span>
+                        
+                        <!-- Mini Radar Scope SVG -->
+                        <div class="relative w-full aspect-square max-w-[150px] sm:max-w-[180px] flex items-center justify-center">
+                            <!-- Radar Lines and dots animated -->
+                            <div class="absolute inset-0 rounded-full border border-neonBlue/20 animate-pulse"></div>
+                            <div class="absolute inset-4 rounded-full border border-white/5"></div>
+                            
+                            <!-- Tactical SVG Crosshair -->
+                            <svg class="w-full h-full text-neonBlue/40 animate-spin" style="animation-duration: 20s;" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="0.5" stroke-dasharray="4 4" />
+                                <path d="M50 0 L50 100 M0 50 L100 50" stroke="currentColor" stroke-width="0.25" />
+                                <circle cx="50" cy="50" r="2" fill="#FFD700" class="animate-ping" />
+                            </svg>
+
+                            <!-- Class Specific Mini Emblems inside radar -->
+                            <div class="absolute text-xl transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 font-sf" id="hud-center-icon">🛡️</div>
+                            <div class="absolute text-[10px] text-gray-500 font-sf font-bold bottom-1 right-2">SYS_OK</div>
+                        </div>
+
+                        <div class="mt-6 text-center w-full">
+                            <h5 class="text-xs font-bold text-white uppercase tracking-wider" id="hud-class-label">TITAN CONNECTED</h5>
+                            <p class="text-[10px] text-gray-500 mt-1">전력 분배 및 실시간 동기화 완료</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: 4대 핵심 매력 포인트 카드뉴스 -->
+    <section id="charms" class="relative py-16 sm:py-24 md:py-32 bg-cosmicBlack">
+        <div class="absolute top-1/4 right-0 w-80 h-80 rounded-full bg-crimsonRed/5 blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-1/4 left-0 w-80 h-80 rounded-full bg-neonBlue/5 blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="max-w-3xl mx-auto text-center mb-12 sm:mb-20">
+                <span class="text-xs font-bold uppercase tracking-[0.3em] text-neonBlue font-sf">03 / CORE CHARMS</span>
+                <h2 class="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight mt-3 mb-6">당신이 전율할 수밖에 없는 이유</h2>
+                <div class="h-1 w-20 bg-neonBlue mx-auto rounded-full mb-6"></div>
+                <p class="text-xs sm:text-sm text-gray-400 leading-relaxed font-light">
+                    수많은 유저가 왜 이 세상을 헤매이며 일어설까요? <br>
+                    데스티니 2만이 선사하는 압도적인 전율 요소를 상세히 정리해 보았습니다.
+                </p>
+            </div>
+
+            <!-- Key Attraction Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+                
+                <!-- Charm Card 1 -->
+                <div class="bg-cosmicCard/50 border border-white/5 hover:border-neonBlue/40 rounded-2xl p-6 sm:p-8 transition-all duration-300 flex flex-col justify-between group glow-blue">
+                    <div>
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 bg-neonBlue/10 rounded-xl border border-neonBlue/30 flex items-center justify-center text-neonBlue mb-6 group-hover:scale-110 transition-transform duration-300 text-2xl">
+                            ⚔️
+                        </div>
+                        <h3 class="text-lg sm:text-2xl font-black mb-3 tracking-wider group-hover:text-neonBlue transition-colors">RPG와 FPS의 유기적인 하모니</h3>
+                        <p class="text-gray-400 text-xs sm:text-sm leading-relaxed mb-6 font-light">
+                            최정상 FPS 명가 번지(Bungie)의 압도적인 타격 무빙과 손맛을 완벽 유지하면서, 흥미진진한 특수 특성을 지닌 무기 파밍과 쉴 틈 없이 성장하는 RPG식 빌드 최적화 재미를 영리하게 융합했습니다.
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-2 pt-4 border-t border-white/5 text-[10px] sm:text-xs text-gray-500">
+                        <span class="w-2 h-2 rounded-full bg-neonBlue flex-shrink-0"></span>
+                        <span>초정밀 탄도 제어 메커니즘 & 다차원적 캐릭터 성장 빌드</span>
+                    </div>
+                </div>
+
+                <!-- Charm Card 2 -->
+                <div class="bg-cosmicCard/50 border border-white/5 hover:border-goldYellow/40 rounded-2xl p-6 sm:p-8 transition-all duration-300 flex flex-col justify-between group glow-gold">
+                    <div>
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 bg-goldYellow/10 rounded-xl border border-goldYellow/30 flex items-center justify-center text-goldYellow mb-6 group-hover:scale-110 transition-transform duration-300 text-2xl">
+                            👥
+                        </div>
+                        <h3 class="text-lg sm:text-2xl font-black mb-3 tracking-wider group-hover:text-goldYellow transition-colors">협동 레이드로 정점을 찍는 멀티플레이</h3>
+                        <p class="text-gray-400 text-xs sm:text-sm leading-relaxed mb-6 font-light">
+                            전 세계 각국의 수호자들과 최고의 호흡을 나누어 보십시오. 정교한 6인 협동 기믹 퍼즐, 전략적 현장 조율, 직업 시너지를 정교하게 요구하는 데스티니의 꽃 '레이드(Raid)' PvE는 영원히 잊을 수 없는 쾌감을 선사합니다.
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-2 pt-4 border-t border-white/5 text-[10px] sm:text-xs text-gray-500">
+                        <span class="w-2 h-2 rounded-full bg-goldYellow flex-shrink-0"></span>
+                        <span>글로벌 자동 파티 매칭 및 음성 연동 디스코드 레이드</span>
+                    </div>
+                </div>
+
+                <!-- Charm Card 3 -->
+                <div class="bg-cosmicCard/50 border border-white/5 hover:border-neonBlue/40 rounded-2xl p-6 sm:p-8 transition-all duration-300 flex flex-col justify-between group glow-blue">
+                    <div>
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 bg-neonBlue/10 rounded-xl border border-neonBlue/30 flex items-center justify-center text-neonBlue mb-6 group-hover:scale-110 transition-transform duration-300 text-2xl">
+                            🌌
+                        </div>
+                        <h3 class="text-lg sm:text-2xl font-black mb-3 tracking-wider group-hover:text-neonBlue transition-colors">우주 오페라 서사시 & 압도적 BGM</h3>
+                        <p class="text-gray-400 text-xs sm:text-sm leading-relaxed mb-6 font-light">
+                            태양계를 가로지르는 대우주 전쟁사, 고해상도의 수려한 행성 비주얼 아트를 아름답게 보조하는 장엄하고 장중한 우주 오페라 오케스트라 사운드트랙은 플레이어의 몰입도의 차원을 완전히 다르게 끌어올립니다.
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-white/5">
+                        <div class="flex items-center space-x-2 text-[10px] sm:text-xs text-gray-500">
+                            <span class="w-2 h-2 rounded-full bg-neonBlue flex-shrink-0"></span>
+                            <span>장엄한 오케스트라 고음질 사운드트랙 지원</span>
+                        </div>
+                        <div class="flex items-end space-x-1 h-4">
+                            <span class="w-0.5 bg-neonBlue animate-pulse" style="height: 60%; animation-duration: 0.8s;"></span>
+                            <span class="w-0.5 bg-neonBlue animate-pulse" style="height: 100%; animation-duration: 1.2s;"></span>
+                            <span class="w-0.5 bg-neonBlue animate-pulse" style="height: 40%; animation-duration: 0.5s;"></span>
+                            <span class="w-0.5 bg-neonBlue animate-pulse" style="height: 80%; animation-duration: 1.5s;"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charm Card 4 -->
+                <div class="bg-cosmicCard/50 border border-white/5 hover:border-crimsonRed/40 rounded-2xl p-6 sm:p-8 transition-all duration-300 flex flex-col justify-between group glow-gold">
+                    <div>
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 bg-crimsonRed/10 rounded-xl border border-crimsonRed/30 flex items-center justify-center text-crimsonRed mb-6 group-hover:scale-110 transition-transform duration-300 text-2xl">
+                            🗣️
+                        </div>
+                        <h3 class="text-lg sm:text-2xl font-black mb-3 tracking-wider group-hover:text-crimsonRed transition-colors">완벽한 현지화 & 명품 성우 풀 더빙</h3>
+                        <p class="text-gray-400 text-xs sm:text-sm leading-relaxed mb-6 font-light">
+                            한국 게이머들이 언어 장벽 없이 게임에만 그대로 동화될 수 있도록 전 대화 성우 연기 녹음(Full Dubbed Audio)과 자연스러운 한국식 고유 정서 표현의 초월적 고품격 번역을 완벽히 구축 완료했습니다.
+                        </p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-4 border-t border-white/5">
+                        <div class="flex items-center space-x-2 text-[10px] sm:text-xs text-gray-500">
+                            <span class="w-2 h-2 rounded-full bg-crimsonRed flex-shrink-0"></span>
+                            <span>대한민국 명품 베테랑 성우 참여 전격 녹음 완료</span>
+                        </div>
+                        <button onclick="simulateVoiceClip()" class="w-full sm:w-auto px-3 py-1 bg-crimsonRed/10 hover:bg-crimsonRed hover:text-white border border-crimsonRed/30 rounded text-[10px] text-crimsonRed font-bold uppercase transition-all duration-300">
+                            음성 미리듣기 재생
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5-2: 3대 대표 레이드 도감 소개 -->
+    <section id="raids" class="relative py-16 sm:py-24 md:py-32 bg-gradient-to-b from-cosmicBlack via-cosmicCard/20 to-cosmicBlack border-t border-b border-white/5 overflow-hidden">
+        <div class="absolute -left-40 top-1/3 w-96 h-96 rounded-full bg-voidPurple/5 blur-[120px] pointer-events-none"></div>
+        <div class="absolute -right-40 bottom-1/3 w-96 h-96 rounded-full bg-neonBlue/5 blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="max-w-3xl mx-auto text-center mb-12 sm:mb-20">
+                <span class="text-xs font-bold uppercase tracking-[0.3em] text-neonBlue font-sf">03-2 / COOPERATIVE RAIDS</span>
+                <h2 class="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight mt-3 mb-6">협동 플레이의 정점: 3대 대표 레이드</h2>
+                <div class="h-1 w-20 bg-neonBlue mx-auto rounded-full mb-6"></div>
+                <p class="text-xs sm:text-sm text-gray-400 leading-relaxed font-light">
+                    단순한 조준과 발사로는 생존할 수 없습니다. <br class="hidden sm:inline">
+                    6인의 수호자가 전원이 하나의 지성이 되어 난해한 시공간 차원 기믹을 풀고 장엄한 보스를 도말하십시오.
+                </p>
+            </div>
+
+            <!-- Raids Cards Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+                
+                <!-- Raid 1: 구원의 경계 -->
+                <div class="bg-cosmicCard/60 border border-white/5 hover:border-crimsonRed/30 rounded-2xl p-5 sm:p-6 lg:p-8 transition-all duration-300 flex flex-col justify-between group glow-gold">
+                    <div>
+                        <!-- Pure SVG abstract geometric art representing Salvation's Edge (The Witness Eye) -->
+                        <div class="w-full aspect-video bg-cosmicBlack rounded-xl border border-white/5 mb-6 flex items-center justify-center relative overflow-hidden group-hover:border-crimsonRed/20 transition-colors">
+                            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,42,75,0.08)_0%,_transparent_70%)]"></div>
+                            <svg class="w-1/2 h-1/2 text-crimsonRed/60" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.75">
+                                <polygon points="50,5 95,85 5,85" stroke-dasharray="2 2" />
+                                <polygon points="50,25 80,75 20,75" stroke="url(#witnessEyeGrad)" stroke-width="1.5" />
+                                <circle cx="50" cy="55" r="10" fill="#05070B" stroke="#00E5FF" stroke-width="1" class="animate-pulse" />
+                                <line x1="50" y1="5" x2="50" y2="85" stroke="#FFD700" stroke-width="0.5" />
+                                <defs>
+                                    <linearGradient id="witnessEyeGrad" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="#FF2A4B" />
+                                        <stop offset="100%" stop-color="#AA00FF" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <span class="absolute bottom-3 right-3 text-[8px] font-sf text-gray-500 uppercase tracking-widest">SECTOR_SHAPE</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-[9px] sm:text-[10px] font-black text-crimsonRed uppercase tracking-wider bg-crimsonRed/10 border border-crimsonRed/20 px-2 py-0.5 rounded">최고 기믹 난이도</span>
+                            <span class="text-xs text-gray-500 font-sf font-bold">THE FINAL SHAPE</span>
+                        </div>
+                        <h3 class="text-lg sm:text-2xl font-black text-white group-hover:text-neonBlue transition-colors mb-3">구원의 경계</h3>
+                        <p class="text-gray-400 text-xs sm:text-sm leading-relaxed mb-6 font-light">
+                            우주 만물의 다차원적 해체와 종말을 획책하는 최후의 숙적 '목격자'와 직접 대면합니다. 기묘하게 일그러진 기하학적 유물 퍼즐을 풀며, 전원 일체의 연대적 무결점을 가동하여 한계를 돌파하십시오.
+                        </p>
+                    </div>
+                    <div class="border-t border-white/5 pt-4 space-y-2">
+                        <div class="flex justify-between text-[11px] text-gray-500">
+                            <span>권장 인원:</span> <span class="text-white font-medium">정밀 6인 화력팀</span>
+                        </div>
+                        <div class="flex justify-between text-[11px] text-gray-500">
+                            <span>소요 시간:</span> <span class="text-crimsonRed font-bold font-sf">★ ★ ★ ★ ★ (최상급)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Raid 2: 딥스톤 무덤 -->
+                <div class="bg-cosmicCard/60 border border-white/5 hover:border-stasisIce/30 rounded-2xl p-5 sm:p-6 lg:p-8 transition-all duration-300 flex flex-col justify-between group glow-blue">
+                    <div>
+                        <!-- Pure SVG abstract geometric art representing Deep Stone Crypt (Orbital Space Walk) -->
+                        <div class="w-full aspect-video bg-cosmicBlack rounded-xl border border-white/5 mb-6 flex items-center justify-center relative overflow-hidden group-hover:border-stasisIce/20 transition-colors">
+                            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(128,222,234,0.08)_0%,_transparent_70%)]"></div>
+                            <svg class="w-1/2 h-1/2 text-stasisIce/60" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.75">
+                                <circle cx="50" cy="50" r="40" stroke-dasharray="3 3" />
+                                <circle cx="50" cy="50" r="28" stroke="url(#cryptSpaceGrad)" stroke-width="1.5" />
+                                <rect x="35" y="35" width="30" height="30" stroke="#00E5FF" stroke-width="0.5" transform="rotate(45 50 50)" />
+                                <line x1="10" y1="50" x2="90" y2="50" stroke="#FFFFFF" stroke-width="0.25" class="opacity-50" />
+                                <defs>
+                                    <linearGradient id="cryptSpaceGrad" x1="0" y1="0" x2="1" y2="1">
+                                        <stop offset="0%" stop-color="#80DEEA" />
+                                        <stop offset="100%" stop-color="#05070B" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <span class="absolute bottom-3 right-3 text-[8px] font-sf text-gray-500 uppercase tracking-widest">ORBIT_STATION</span>
+                        </div>
+
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-[9px] sm:text-[10px] font-black text-stasisIce uppercase tracking-wider bg-stasisIce/10 border border-stasisIce/20 px-2 py-0.5 rounded">장엄한 비주얼 1위</span>
+                            <span class="text-xs text-gray-500 font-sf font-bold">BEYOND LIGHT</span>
+                        </div>
+                        <h3 class="text-lg sm:text-2xl font-black text-white group-hover:text-neonBlue transition-colors mb-3">딥스톤 무덤</h3>
+                        <p class="text-gray-400 text-xs sm:text-sm leading-relaxed mb-6 font-light">
+                            기계 전사 '엑소'의 요람이자 혹한의 유로파 지하 연구소를 지키는 전투를 개시합니다. 지구 궤도를 공전하는 우주정거장에서 허공으로 직접 해치를 열어 뛰어내리는 심우주 궤도 보행의 장중한 비장미를 선사합니다.
+                        </p>
+                    </div>
+                    <div class="border-t border-white/5 pt-4 space-y-2">
+                        <div class="flex justify-between text-[11px] text-gray-500">
+                            <span>권장 인원:</span> <span class="text-white font-medium">유기적 역할분담 6인</span>
+                        </div>
+                        <div class="flex justify-between text-[11px] text-gray-500">
+                            <span>소요 시간:</span> <span class="text-stasisIce font-bold font-sf">★ ★ ★ ☆ ☆ (표준)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Raid 3: 마지막 소원 -->
+                <div class="bg-cosmicCard/60 border border-white/5 hover:border-goldYellow/30 rounded-2xl p-5 sm:p-6 lg:p-8 transition-all duration-300 flex flex-col justify-between group glow-gold">
+                    <div>
+                        <!-- Pure SVG abstract geometric art representing Last Wish (Dreaming City & Ahamkara) -->
+                        <div class="w-full aspect-video bg-cosmicBlack rounded-xl border border-white/5 mb-6 flex items-center justify-center relative overflow-hidden group-hover:border-goldYellow/20 transition-colors">
+                            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,215,0,0.06)_0%,_transparent_70%)]"></div>
+                            <svg class="w-1/2 h-1/2 text-goldYellow/60" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.75">
+                                <circle cx="50" cy="50" r="35" stroke="url(#dreamingCityGrad)" stroke-width="1.5" />
+                                <path d="M50,15 L62,45 L92,50 L62,55 L50,85 L38,55 L8,50 L38,45 Z" fill="none" stroke="#FFD700" stroke-width="0.75" />
+                                <circle cx="50" cy="50" r="6" fill="#080A10" stroke="#AA00FF" stroke-width="1" />
+                                <defs>
+                                    <linearGradient id="dreamingCityGrad" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="#FFD700" />
+                                        <stop offset="100%" stop-color="#AA00FF" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <span class="absolute bottom-3 right-3 text-[8px] font-sf text-gray-500 uppercase tracking-widest">WISH_DRAGON</span>
+                        </div>
+
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-[9px] sm:text-[10px] font-black text-goldYellow uppercase tracking-wider bg-goldYellow/10 border border-goldYellow/20 px-2 py-0.5 rounded">최고의 명작 레이드</span>
+                            <span class="text-xs text-gray-500 font-sf font-bold">FORSAKEN</span>
+                        </div>
+                        <h3 class="text-lg sm:text-2xl font-black text-white group-hover:text-neonBlue transition-colors mb-3">마지막 소원</h3>
+                        <p class="text-gray-400 text-xs sm:text-sm leading-relaxed mb-6 font-light">
+                            꿈의 도시 지하 심장에 숨어있는 수수께끼의 천 개 목소리의 용 아함카라, '리븐'과의 운명적 사투입니다. 전설과 명조 장치 같은 비밀의 발판 판독, 독특한 고대 주문 해제 기믹을 통해 판타지 소설 속 보스 레이드를 실감하십시오.
+                        </p>
+                    </div>
+                    <div class="border-t border-white/5 pt-4 space-y-2">
+                        <div class="flex justify-between text-[11px] text-gray-500">
+                            <span>권장 인원:</span> <span class="text-white font-medium">전략적 호흡 6인</span>
+                        </div>
+                        <div class="flex justify-between text-[11px] text-gray-500">
+                            <span>소요 시간:</span> <span class="text-goldYellow font-bold font-sf">★ ★ ★ ★ ☆ (높음)</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: RECOMMENDATION ("Is Destiny 2 for You?") -->
+    <section id="recommend" class="relative py-16 sm:py-24 bg-gradient-to-t from-cosmicCard via-cosmicBlack to-cosmicCard border-y border-white/5">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12">
+                <span class="text-xs font-bold uppercase tracking-[0.3em] text-neonBlue font-sf">04 / AUDIENCE CHECK</span>
+                <h2 class="text-2xl sm:text-4xl font-black tracking-tight mt-3">나와 얼마나 잘 어울리는 게임일까?</h2>
+                <p class="text-gray-400 text-xs sm:text-sm mt-3">각 항목에 체크하여 수호자 적합도 결과 수치를 실시간으로 산출해 보세요!</p>
+            </div>
+
+            <!-- Recommendation Checklist Container -->
+            <div class="bg-cosmicBlack/80 border border-white/10 rounded-2xl p-4 sm:p-8 md:p-10 max-w-2xl mx-auto">
+                <div class="space-y-4">
+                    <label class="flex items-start p-3 sm:p-4 bg-white/5 hover:bg-white/10 rounded-xl border border-white/5 cursor-pointer transition-all duration-300 group">
+                        <input type="checkbox" onchange="calculateRecommendScore()" class="quiz-check rounded border-gray-600 text-neonBlue focus:ring-neonBlue h-5 w-5 mt-0.5 mr-4 bg-cosmicBlack flex-shrink-0">
+                        <div>
+                            <span class="font-bold text-sm sm:text-base text-white group-hover:text-neonBlue transition-colors">새롭게 입문할 수 있는 탄탄한 대작 게임을 찾고 있다</span>
+                            <p class="text-xs text-gray-400 mt-1">대규모 업데이트와 탄탄한 글로벌 유저 풀로 오랫동안 안심하고 즐길 게임을 원하시는 분</p>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start p-3 sm:p-4 bg-white/5 hover:bg-white/10 rounded-xl border border-white/5 cursor-pointer transition-all duration-300 group">
+                        <input type="checkbox" onchange="calculateRecommendScore()" class="quiz-check rounded border-gray-600 text-neonBlue focus:ring-neonBlue h-5 w-5 mt-0.5 mr-4 bg-cosmicBlack flex-shrink-0">
+                        <div>
+                            <span class="font-bold text-sm sm:text-base text-white group-hover:text-neonBlue transition-colors">단순 총싸움(FPS)을 넘어 장비 세팅 및 성장의 재미도 즐긴다</span>
+                            <p class="text-xs text-gray-400 mt-1">슈팅의 쾌감과 더불어 수천 가지 무기 빌드를 구축하는 재미를 모두 선호하는 분</p>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start p-3 sm:p-4 bg-white/5 hover:bg-white/10 rounded-xl border border-white/5 cursor-pointer transition-all duration-300 group">
+                        <input type="checkbox" onchange="calculateRecommendScore()" class="quiz-check rounded border-gray-600 text-neonBlue focus:ring-neonBlue h-5 w-5 mt-0.5 mr-4 bg-cosmicBlack flex-shrink-0">
+                        <div>
+                            <span class="font-bold text-sm sm:text-base text-white group-hover:text-neonBlue transition-colors">동료나 온라인 길드원과 소통하며 보스를 격파하는 전율을 선호한다</span>
+                            <p class="text-xs text-gray-400 mt-1">서로의 역할을 완벽하게 분담하여 최고 기믹 난이도를 격파하는 연대를 원하시는 분</p>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start p-3 sm:p-4 bg-white/5 hover:bg-white/10 rounded-xl border border-white/5 cursor-pointer transition-all duration-300 group">
+                        <input type="checkbox" onchange="calculateRecommendScore()" class="quiz-check rounded border-gray-600 text-neonBlue focus:ring-neonBlue h-5 w-5 mt-0.5 mr-4 bg-cosmicBlack flex-shrink-0">
+                        <div>
+                            <span class="font-bold text-sm sm:text-base text-white group-hover:text-neonBlue transition-colors">유튜브/치지직 등 미디어에서 멋진 스킬 연출을 보고 호기심이 생겼다</span>
+                            <p class="text-xs text-gray-400 mt-1">스타일리시한 비행과 눈부신 번개, 공허 마법 초능력을 직접 체감하기로 마음먹은 예비 수호자</p>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- Score Board -->
+                <div class="mt-8 pt-8 border-t border-white/10 text-center" id="recommendResultBox">
+                    <div class="text-[11px] font-semibold tracking-wider text-gray-500 mb-2">수호자 잠재 적합도 수치</div>
+                    <div class="text-4xl font-black text-neonBlue transition-all duration-500 font-sf" id="recommendPercent">0%</div>
+                    <p class="text-xs text-gray-400 mt-2 max-w-sm mx-auto" id="recommendAdvice">위의 체크박스를 하나씩 클릭하시면 실시간으로 분석합니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 7: SYSTEM REQS & PLATFORMS -->
+    <section id="specs" class="relative py-16 sm:py-24 md:py-32 bg-cosmicBlack">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 items-start">
+                
+                <!-- System Requirements Spec -->
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-[0.3em] text-neonBlue font-sf">05 / SPECS</span>
+                    <h2 class="text-2xl sm:text-4xl font-black tracking-tight mt-3 mb-8">PC 실행 호환 사양표</h2>
+
+                    <div class="space-y-6">
+                        <!-- Minimum -->
+                        <div class="bg-cosmicCard/30 p-5 rounded-xl border border-white/5">
+                            <h4 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-3 border-b border-white/5 pb-2">최소 가동 사양 (Minimum)</h4>
+                            <ul class="text-xs space-y-2 text-gray-300">
+                                <li class="flex justify-between"><strong class="text-white">OS:</strong> <span>Windows® 10 64-bit (최신 업데이트)</span></li>
+                                <li class="flex justify-between"><strong class="text-white">CPU:</strong> <span class="text-right">Intel® Core™ i3 3250 / AMD FX-4350</span></li>
+                                <li class="flex justify-between"><strong class="text-white">RAM:</strong> <span>6 GB RAM</span></li>
+                                <li class="flex justify-between"><strong class="text-white">GPU:</strong> <span class="text-right">NVIDIA® GTX 660 / AMD Radeon™ HD 7850</span></li>
+                                <li class="flex justify-between"><strong class="text-white">저장공간:</strong> <span>105 GB 여유 사용 공간</span></li>
+                            </ul>
+                        </div>
+
+                        <!-- Recommended -->
+                        <div class="bg-cosmicCard/30 p-5 rounded-xl border border-white/5">
+                            <h4 class="text-xs font-bold tracking-widest text-goldYellow uppercase mb-3 border-b border-white/5 pb-2">권장 플레이 사양 (Recommended)</h4>
+                            <ul class="text-xs space-y-2 text-gray-300">
+                                <li class="flex justify-between"><strong class="text-white">OS:</strong> <span>Windows® 10/11 64-bit (최신 업데이트)</span></li>
+                                <li class="flex justify-between"><strong class="text-white">CPU:</strong> <span class="text-right">Intel® Core™ i5 2400 / AMD Ryzen™ 5 1600X</span></li>
+                                <li class="flex justify-between"><strong class="text-white">RAM:</strong> <span>8 GB RAM 이상</span></li>
+                                <li class="flex justify-between"><strong class="text-white">GPU:</strong> <span class="text-right">NVIDIA® GTX 970 / AMD Radeon™ R9 390 이상</span></li>
+                                <li class="flex justify-between"><strong class="text-white">저장공간:</strong> <span>105 GB 고속 SSD 설치 완벽 권장</span></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Spec Testing Interactive Widget -->
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-5 sm:p-6 mt-8">
+                        <h4 class="text-xs sm:text-sm font-black text-white tracking-wider mb-4 flex items-center gap-2">
+                            <span>🎮</span> 보유 탑재 그래픽 카드로 즉각 구동 진단하기
+                        </h4>
+                        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4">
+                            <select id="gpuSelect" class="flex-1 bg-cosmicCard border border-white/10 rounded px-3 py-2 text-xs text-white focus:outline-none focus:border-neonBlue h-10">
+                                <option value="" disabled selected>-- 보유 그래픽 세대를 선택하세요 --</option>
+                                <option value="super">NVIDIA RTX 4080 / 4070 / 3080급 이상 하이엔드 모델</option>
+                                <option value="recom">NVIDIA RTX 3060 / 2060 / GTX 1070급 표준 모델</option>
+                                <option value="min">NVIDIA GTX 1050 Ti / GTX 960급 보급 모델</option>
+                                <option value="low">Intel HD 내장형 기본 그래픽 프로세서</option>
+                            </select>
+                            <button onclick="checkCompatibility()" class="w-full sm:w-auto px-6 h-10 bg-neonBlue hover:bg-white text-cosmicBlack font-bold text-xs tracking-wider rounded transition-all flex-shrink-0">
+                                가동 테스트
+                            </button>
+                        </div>
+                        <div id="compatResult" class="hidden p-3 bg-cosmicBlack/50 rounded border border-white/5 text-xs text-center"></div>
+                    </div>
+                </div>
+
+                <!-- Action CTA -->
+                <div class="bg-cosmicCard/40 border border-white/10 rounded-2xl p-6 sm:p-8 lg:p-12 text-center flex flex-col justify-between h-full glow-blue" id="cta">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-[0.3em] text-neonBlue font-sf">CHOOSE YOUR PLATFORM</span>
+                        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight mt-3 mb-6">지금 전장의 일원으로 착륙하세요!</h2>
+                        <p class="text-gray-400 text-xs sm:text-sm leading-relaxed mb-8 max-w-md mx-auto font-light">
+                            데스티니 2는 초기 본편 및 기본 협동 모드 영역이 완전 <strong class="text-neonBlue">무료(Free-to-Play)</strong>로 제공됩니다. 언제든 원하는 기기에서 전설을 써 나가세요.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 sm:gap-4 max-w-md mx-auto w-full mb-8">
+                        <div class="p-3 sm:p-4 bg-white/5 border border-white/5 hover:border-neonBlue/30 rounded-xl transition-all-300 flex flex-col items-center group cursor-pointer" onclick="window.open('https://store.steampowered.com/app/1085660/Destiny_2/', '_blank')">
+                            <span class="text-xl sm:text-2xl mb-2 group-hover:scale-125 transition-transform">💻</span>
+                            <span class="text-[11px] sm:text-xs font-bold text-white">Steam (PC)</span>
+                            <span class="text-[9px] text-gray-500 mt-1">무료 다운로드</span>
+                        </div>
+                        <div class="p-3 sm:p-4 bg-white/5 border border-white/5 hover:border-neonBlue/30 rounded-xl transition-all-300 flex flex-col items-center group cursor-pointer" onclick="window.open('https://store.playstation.com/ko-kr/product/HP0382-PPSA02410_00-DESTINY2THEGAME0', '_blank')">
+                            <span class="text-xl sm:text-2xl mb-2 group-hover:scale-125 transition-transform">🎮</span>
+                            <span class="text-[11px] sm:text-xs font-bold text-white">PlayStation 5</span>
+                            <span class="text-[9px] text-gray-500 mt-1">PS 스토어 바로가기</span>
+                        </div>
+                        <div class="p-3 sm:p-4 bg-white/5 border border-white/5 hover:border-neonBlue/30 rounded-xl transition-all-300 flex flex-col items-center group cursor-pointer" onclick="window.open('https://www.xbox.com/ko-kr/games/store/destiny-2/bp00gsvnqgkg', '_blank')">
+                            <span class="text-xl sm:text-2xl mb-2 group-hover:scale-125 transition-transform">💚</span>
+                            <span class="text-[11px] sm:text-xs font-bold text-white">Xbox Series X|S</span>
+                            <span class="text-[9px] text-gray-500 mt-1">MS 스토어 입점</span>
+                        </div>
+                        <div class="p-3 sm:p-4 bg-white/5 border border-white/5 hover:border-neonBlue/30 rounded-xl transition-all-300 flex flex-col items-center group cursor-pointer" onclick="window.open('https://store.epicgames.com/ko/p/destiny-2', '_blank')">
+                            <span class="text-xl sm:text-2xl mb-2 group-hover:scale-125 transition-transform">🔥</span>
+                            <span class="text-[11px] sm:text-xs font-bold text-white">Epic Games</span>
+                            <span class="text-[9px] text-gray-500 mt-1">에픽스토어 런칭</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <button onclick="simulateLaunch()" class="w-full py-4 bg-gradient-to-r from-neonBlue to-teal-400 hover:from-white hover:to-white text-cosmicBlack font-black text-xs sm:text-sm tracking-widest uppercase rounded shadow-2xl shadow-neonBlue/20 transform active:scale-[0.98] transition-all duration-300">
+                            무료로 전설의 서 시작하기
+                        </button>
+                        <p class="text-[9px] sm:text-[10px] text-gray-500 font-light">
+                            ※ 본 허브는 데스티니 2 한국 게이머 대상 설명형 포트폴리오 제안 기획서입니다.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-cosmicBlack border-t border-white/10 py-10 sm:py-12 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center space-x-3">
+                <!-- Custom Inline SVG Destiny Tricon Footer Logo -->
+                <svg class="w-6 h-6 text-white/50" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 85L80 33H62L50 54L38 33H20L50 85Z" fill="currentColor"/>
+                    <path d="M50 15L24 25V30L50 20L76 30V25L50 15Z" fill="currentColor" class="opacity-80"/>
+                </svg>
+                <div class="text-left">
+                    <span class="text-xs font-black tracking-widest text-white/80">DESTINY 2 BRIGHTNESS</span>
+                    <p class="text-[9px] text-gray-500">Beyond the Light. Become Legend.</p>
+                </div>
+            </div>
+
+            <div class="text-center md:text-right text-[10px] sm:text-[11px] text-gray-500 space-y-1 font-light">
+                <p>© 2026 Bungie, Inc. All rights reserved. Destiny, the Destiny Logo, Bungie are trademarks of Bungie, Inc.</p>
+                <p>본 포트폴리오 사이트는 개인 팬 가이드 기획서이며 영리 목적으로 양도/사용하지 않습니다.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT LOGIC -->
+    <script>
+        /* 1. Starry Canvas Background System (Traveling Light effects) */
+        const canvas = document.getElementById('cosmicBackground');
+        const ctx = canvas.getContext('2d');
+
+        let particles = [];
+        const particleCount = 45; // Slightly reduced for better performance on mobile device rendering
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.2;
+                this.speedY = (Math.random() - 0.5) * 0.2;
+                this.opacity = Math.random() * 0.5 + 0.1;
+                this.color = Math.random() > 0.8 ? '#00E5FF' : '#FFFFFF';
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        window.onload = function() {
+            animate();
+            switchClass('titan');
+        };
+
+        /* Mobile Menu Drawer Toggle Logic */
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        /* 2. Interactive Class Switching Logic with exact requested descriptions */
+        const classData = {
+            titan: {
+                title: '타이탄 · Titan',
+                subBadge: '선봉대 · 방어 담당 · 근접 전투원',
+                attributes: '강인함, 보호, 돌파력',
+                slogan: '“가장 먼저 적진에 뛰어들고, 가장 마지막까지 동료 앞을 지킵니다.”',
+                desc: '타이탄은 적과 가까운 거리에서 전선을 밀어붙이고, 아군이 싸울 공간을 만들어주는 클래스입니다. 고유 능력인 방벽으로 적의 공격을 차단하거나, 엄폐물을 만들어 전투 구역을 안정적으로 확보할 수 있습니다. 서브클래스에 따라 보호막 제공, 생존력 강화, 강력한 근접 공격과 폭발적인 궁극기 피해도 담당합니다.',
+                roleColorClass: 'text-orange-400 bg-orange-500/10 border-orange-500/30',
+                ultIcon: '🛡️',
+                ultTitle: '방벽 (Barricade)',
+                ultDesc: '고유 능력인 방벽을 소환하여 적의 투사체를 완벽하게 방어하고 아군의 전술 엄폐 지대를 형성합니다.',
+                stat1: '95%',
+                stat2: '45%',
+                stat3: '70%',
+                stat1Color: '#f97316',
+                stat2Color: '#00E5FF',
+                stat3Color: '#FFD700',
+                hudLabel: 'TITAN LINK ACTIVE'
+            },
+            warlock: {
+                title: '워록 · Warlock',
+                subBadge: '능력형 공격수 · 치유사 · 전장 통제자',
+                attributes: '신비, 지식, 원소 지배',
+                slogan: '“우주의 힘을 이해하고, 그 힘으로 전장의 법칙을 다시 씁니다.”',
+                desc: '워록은 수류탄과 원소 능력을 적극적으로 사용하면서 적 무리를 제압하거나 화력팀을 지원하는 클래스입니다. 고유 능력인 균열은 일정 지역에서 아군을 치유하거나 공격력을 강화합니다. 치유와 버프뿐 아니라 강력한 광역 공격, 지속적인 능력 피해, 소환체와 상태 이상을 이용한 전장 통제에도 특화될 수 있습니다.',
+                roleColorClass: 'text-purple-400 bg-purple-500/10 border-purple-500/30',
+                ultIcon: '🔮',
+                ultTitle: '균열 (Rift)',
+                ultDesc: '지면에 원소 샘 균열을 투사하여 범위 안 아군의 생명력을 초고속으로 회복시키거나 물리 무기 화력을 극대화합니다.',
+                stat1: '60%',
+                stat2: '75%',
+                stat3: '95%',
+                stat1Color: '#a855f7',
+                stat2Color: '#00E5FF',
+                stat3Color: '#FFD700',
+                hudLabel: 'WARLOCK LINK ACTIVE'
+            },
+            hunter: {
+                title: '헌터 · Hunter',
+                subBadge: '기동형 공격수 · 암살자 · 정찰병',
+                attributes: '민첩함, 은밀함, 정밀함',
+                slogan: '“보이지 않는 곳에서 기회를 포착하고, 단 한 번의 공격으로 전세를 뒤집습니다.”',
+                desc: '헌터는 높은 기동성과 은신 능력을 활용해 위험을 피하면서 유리한 위치를 선점하는 클래스입니다. 무기와 능력의 피해를 강화하거나, 강력한 단발 공격으로 우선순위가 높은 적을 제거하는 플레이에 잘 어울립니다. 고유 능력인 회피는 무기를 즉시 재장전하거나 근접 능력 에너지를 회복하는 방식으로 사용할 수 있습니다.',
+                roleColorClass: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30',
+                ultIcon: '🏹',
+                ultTitle: '회피 (Dodge)',
+                ultDesc: '적의 조준과 탄환 세례를 즉각 회피함과 동시에 주무기 탄약을 재장전하고 스킬 충전을 가속합니다.',
+                stat1: '40%',
+                stat2: '95%',
+                stat3: '85%',
+                stat1Color: '#06b6d4',
+                stat2Color: '#00E5FF',
+                stat3Color: '#FFD700',
+                hudLabel: 'HUNTER LINK ACTIVE'
+            }
+        };
+
+        function switchClass(classKey) {
+            document.querySelectorAll('.class-btn').forEach(btn => {
+                btn.style.borderColor = 'transparent';
+                btn.style.background = 'rgba(255, 255, 255, 0.05)';
+            });
+            document.querySelectorAll('[id^="indicator-"]').forEach(ind => {
+                ind.style.opacity = '0';
+            });
+
+            const activeBtn = document.getElementById('btn-' + classKey);
+            const activeInd = document.getElementById('indicator-' + classKey);
+            if(activeBtn) activeBtn.style.borderColor = '#00E5FF';
+            if(activeInd) activeInd.style.opacity = '1';
+
+            const data = classData[classKey];
+
+            const displayTitle = document.getElementById('class-title');
+            const displaySubBadge = document.getElementById('class-sub-badge');
+            const displaySlogan = document.getElementById('class-slogan');
+            const displayDesc = document.getElementById('class-desc');
+            const displayUltIcon = document.getElementById('class-ult-icon');
+            const displayUltTitle = document.getElementById('class-ult-title');
+            const displayUltDesc = document.getElementById('class-ult-desc');
+
+            const s1Val = document.getElementById('stat-1-val');
+            const s2Val = document.getElementById('stat-2-val');
+            const s3Val = document.getElementById('stat-3-val');
+
+            const s1Bar = document.getElementById('stat-1-bar');
+            const s2Bar = document.getElementById('stat-2-bar');
+            const s3Bar = document.getElementById('stat-3-bar');
+
+            const s1Label = document.getElementById('stat-1-label');
+            const s2Label = document.getElementById('stat-2-label');
+            const s3Label = document.getElementById('stat-3-label');
+            
+            // HUD specific
+            const hudCenterIcon = document.getElementById('hud-center-icon');
+            const hudClassLabel = document.getElementById('hud-class-label');
+
+            displayTitle.innerText = data.title;
+            displaySubBadge.innerText = data.subBadge;
+            displaySlogan.innerText = data.slogan;
+            displayDesc.innerText = data.desc;
+            displayUltIcon.innerText = data.ultIcon;
+            displayUltTitle.innerText = data.ultTitle;
+            displayUltDesc.innerText = data.ultDesc;
+            
+            hudCenterIcon.innerText = data.ultIcon;
+            hudClassLabel.innerText = data.hudLabel;
+
+            s1Val.innerText = data.stat1;
+            s2Val.innerText = data.stat2;
+            s3Val.innerText = data.stat3;
+
+            s1Bar.style.width = data.stat1;
+            s1Bar.style.backgroundColor = data.stat1Color;
+            s2Bar.style.width = data.stat2;
+            s2Bar.style.backgroundColor = data.stat2Color;
+            s3Bar.style.width = data.stat3;
+            s3Bar.style.backgroundColor = data.stat3Color;
+
+            // Dynamically adjust labels based on class themes
+            if (classKey === 'titan') {
+                s1Label.innerText = "전투 유지 및 방어 한계성 (Defense)";
+                s2Label.innerText = "전략적 돌파성 및 기동성 (Agility)";
+                s3Label.innerText = "물리 화력 및 전술 제어력 (Control)";
+            } else if (classKey === 'hunter') {
+                s1Label.innerText = "전선 유지 생존력 (Defense)";
+                s2Label.innerText = "극도의 반응 속도 & 회피 민첩함 (Agility)";
+                s3Label.innerText = "단발 약점 공격 정밀 타격력 (Control)";
+            } else {
+                s1Label.innerText = "스킬 회복 장판 균열 에너지 (Defense)";
+                s2Label.innerText = "순간 부양 및 공중 전장 제어 (Agility)";
+                s3Label.innerText = "우주 원소 스킬 난사 및 소환 제어력 (Control)";
+            }
+        }
+
+        /* 3. Voice Clip Sound Simulation */
+        function simulateVoiceClip() {
+            const koreanVoices = [
+                "“빛이 우리를 인도하리라, 수호자여 전장으로 나아가라!” - 세인트-14 성우",
+                "“이 위협에서 함께 살아남아야만 우리는 마침내 전설이 될 수 있다.” - 자발라 사령관 성우",
+                "“여행자는 대답하지 않았으나, 우리는 쓰러져 대답을 대신할 리 없다.” - 아이코라 레이 성우",
+                "“우물쭈물할 시간 없어 수호자! 얼른 가짜 태양을 한 대 먹여주자고!” - 고스트 성우"
+            ];
+            const randomIndex = Math.floor(Math.random() * koreanVoices.length);
+            
+            // Build visual feedback popup inside body
+            const popup = document.createElement('div');
+            popup.className = "fixed bottom-4 right-4 sm:bottom-10 sm:right-10 z-50 max-w-[280px] sm:max-w-sm bg-cosmicCard border border-neonBlue p-4 sm:p-5 rounded-xl shadow-2xl animate-pulse";
+            popup.innerHTML = `
+                <div class="flex items-center space-x-3 mb-2">
+                    <span class="text-xl">🔊</span>
+                    <span class="text-xs text-neonBlue font-bold tracking-wider uppercase font-sf">KOREAN AUDIO PLAYING</span>
+                </div>
+                <p class="text-xs text-white font-medium leading-relaxed">${koreanVoices[randomIndex]}</p>
+                <button onclick="this.parentElement.remove()" class="text-[9px] text-gray-500 hover:text-white underline mt-3 block text-right w-full">닫기</button>
+            `;
+            document.body.appendChild(popup);
+            setTimeout(() => { if(popup) popup.remove(); }, 6000);
+        }
+
+        /* 4. Live Guardian Playercount simulator */
+        let liveCount = 43280;
+        setInterval(() => {
+            const shift = Math.floor((Math.random() - 0.5) * 45);
+            liveCount += shift;
+            document.getElementById('livePlayers').innerText = liveCount.toLocaleString() + '+';
+        }, 3000);
+
+        /* 5. Recommendation Score Calculator */
+        function calculateRecommendScore() {
+            const checkedCount = document.querySelectorAll('.quiz-check:checked').length;
+            const percentElement = document.getElementById('recommendPercent');
+            const adviceElement = document.getElementById('recommendAdvice');
+            
+            let percentage = checkedCount * 25;
+            percentElement.innerText = percentage + '%';
+
+            if (percentage === 0) {
+                percentElement.className = "text-4xl font-black text-gray-500 transition-all font-sf";
+                adviceElement.innerText = "위의 체크박스를 하나씩 클릭하시면 실시간으로 분석합니다.";
+            } else if (percentage === 25) {
+                percentElement.className = "text-4xl font-black text-crimsonRed transition-all font-sf";
+                adviceElement.innerText = "게임에 흥미를 가져가고 있는 단계군요! 입문 가이드를 탐색해 보세요.";
+            } else if (percentage === 50) {
+                percentElement.className = "text-4xl font-black text-goldYellow transition-all font-sf";
+                adviceElement.innerText = "충분히 몰입하실 만한 자질을 지녔습니다. 무료 플레이 구역부터 접속해 보세요!";
+            } else if (percentage === 75) {
+                percentElement.className = "text-4xl font-black text-neonBlue transition-all font-sf";
+                adviceElement.innerText = "훌륭한 적합도입니다! 다운로드 버튼을 눌러도 후회하지 않을 영웅 후보입니다.";
+            } else if (percentage === 100) {
+                percentElement.className = "text-4xl font-black text-emerald-400 animate-bounce transition-all font-sf";
+                adviceElement.innerText = "당신은 완벽하게 타고난 인류의 전사, 수호자 그 자체입니다! 지금 당장 전선으로 귀환하세요!!";
+            }
+        }
+
+        /* 6. Spec Compatibility Checker Tool */
+        function checkCompatibility() {
+            const selectValue = document.getElementById('gpuSelect').value;
+            const resultBox = document.getElementById('compatResult');
+
+            if (!selectValue) {
+                resultBox.className = "p-3 bg-red-500/10 border border-red-500/20 rounded text-xs text-center text-red-400 block";
+                resultBox.innerText = "보유하신 그래픽 세대를 선택해 주시기 바랍니다.";
+                return;
+            }
+
+            resultBox.className = "p-3 bg-cosmicCard/80 rounded border text-xs text-center block transition-all-300";
+
+            if (selectValue === 'super') {
+                resultBox.classList.add('border-emerald-500', 'text-emerald-400');
+                resultBox.innerHTML = "🎯 <strong>울트라 최고 옵션 보장:</strong> 4K 고화질 해상도 및 고주사율 프레임으로 태양계를 비주얼 가득하게 가를 수 있습니다!";
+            } else if (selectValue === 'recom') {
+                resultBox.classList.add('border-neonBlue', 'text-neonBlue');
+                resultBox.innerHTML = "✨ <strong>권장 사양 완벽 일치:</strong> Full HD 최상급 그래픽 타협으로 쾌적하고 끈김없는 정교한 6인 협동 레이드를 구현합니다.";
+            } else if (selectValue === 'min') {
+                resultBox.classList.add('border-goldYellow', 'text-goldYellow');
+                resultBox.innerHTML = "👍 <strong>안정적 구동 가능:</strong> 품질 옵션 타협 진행 시 아주 부드러운 전투 프레임을 확보하실 수 있습니다.";
+            } else if (selectValue === 'low') {
+                resultBox.classList.add('border-crimsonRed', 'text-crimsonRed');
+                resultBox.innerHTML = "⚠️ <strong>원활한 구동 불안정:</strong> 1인칭 FPS 탄도 교전을 안정적으로 감당하기 위해 외장 그래픽 보드 탑재를 권장합니다.";
+            }
+        }
+
+        /* 7. Action CTA Launch simulation */
+        function simulateLaunch() {
+            const userChoice = confirm("🚀 [Bungie 공식 전장 허브 연동]\n\n실제 데스티니 2 한국어 입문 지원 다운로드 플랫폼 허브로 바로 이동하시겠습니까?");
+            if (userChoice) {
+                window.open("https://www.bungie.net/7/ko/Destiny", "_blank");
+            }
+        }
+    </script>
+</body>
+</html>
