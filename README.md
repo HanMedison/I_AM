@@ -1,2 +1,2 @@
 # I_AM
-SSAFY PJT
+SSAFY 16기 온보딩특강의 PJT
